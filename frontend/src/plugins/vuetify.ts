@@ -49,8 +49,8 @@ export default createVuetify({
     },
   },
   locale: {
-    locale: localStorage.getItem("locale") ?? 'en',
-    fallback: 'en',
+    locale: localStorage.getItem("locale") ?? 'zhHans',
+    fallback: 'zhHans',
     messages: { en, fa, vi, zhHans, zhHant, ru },
   },
 })

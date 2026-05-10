@@ -96,7 +96,7 @@ const login = async () => {
   }
 }
 const changeLocale = (l: any) => {
-  locale.current.value = l ?? 'en'
+  locale.current.value = l ?? 'zhHans'
   localStorage.setItem('locale', locale.current.value)
 }
 const changeTheme = (th: string) => {
@@ -108,4 +108,3 @@ const isActiveTheme = (th: string) => {
   return current == th
 }
 </script>
-  

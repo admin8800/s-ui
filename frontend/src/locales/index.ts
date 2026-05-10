@@ -8,8 +8,8 @@ import ru from './ru'
 
 export const i18n = createI18n({
   legacy: false,
-  locale: localStorage.getItem("locale") ?? 'en',
-  fallbackLocale: 'en',
+  locale: localStorage.getItem("locale") ?? 'zhHans',
+  fallbackLocale: 'zhHans',
   messages: {
     en: en,
     fa: fa,
