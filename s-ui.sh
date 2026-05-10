@@ -90,13 +90,15 @@ update() {
 }
 
 custom_version() {
-    echo "请输入面板版本（例如 0.0.1）："
+    echo "请输入面板版本（例如 v1.4.1）："
     read panel_version
 
     if [ -z "$panel_version" ]; then
         echo "面板版本不能为空。正在退出。"
     exit 1
     fi
+
+    [[ "${panel_version}" != v* ]] && panel_version="v${panel_version}"
 
     download_link="https://raw.githubusercontent.com/admin8800/s-ui/main/install.sh"
 

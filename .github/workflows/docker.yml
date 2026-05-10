@@ -38,6 +38,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 规范化发布标签
+        id: vars
+        run: |
+          TAG="${{ inputs.tag }}"
+          case "$TAG" in
+            v*) echo "tag=$TAG" >> "$GITHUB_OUTPUT" ;;
+            *) echo "tag=v$TAG" >> "$GITHUB_OUTPUT" ;;
+          esac
+
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
@@ -46,5 +55,5 @@ jobs:
           platforms: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7,linux/arm/v6
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ inputs.tag }}
+            ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.tag }}
             ${{ env.IMAGE_NAME }}:latest

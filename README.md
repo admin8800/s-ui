@@ -50,10 +50,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/main/install.sh
 
 ## 安装旧版本
 
-**步骤 1：** 如果要安装指定旧版本，请在安装命令末尾追加版本号。例如版本 `1.0.0`：
+**步骤 1：** 如果要安装指定旧版本，请在安装命令末尾追加带 `v` 的版本标签。例如版本 `v1.0.0`：
 
 ```sh
-VERSION=1.0.0 && bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/$VERSION/install.sh) $VERSION
+VERSION=v1.0.0 && bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/$VERSION/install.sh) $VERSION
 ```
 
 ## 手动安装

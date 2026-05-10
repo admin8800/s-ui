@@ -148,11 +148,12 @@ install_s-ui() {
         fi
     else
         last_version=$1
+        [[ "${last_version}" != v* ]] && last_version="v${last_version}"
         url="https://github.com/admin8800/s-ui/releases/download/${last_version}/s-ui-linux-$(arch).tar.gz"
-        echo -e "开始安装 s-ui v$1"
+        echo -e "开始安装 s-ui ${last_version}"
         wget -N --no-check-certificate -O /tmp/s-ui-linux-$(arch).tar.gz ${url}
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}下载 s-ui v$1 失败，请检查该版本是否存在${plain}"
+            echo -e "${red}下载 s-ui ${last_version} 失败，请检查该版本是否存在${plain}"
             exit 1
         fi
     fi
@@ -175,7 +176,7 @@ install_s-ui() {
 
     systemctl enable s-ui --now
 
-    echo -e "${green}s-ui v${last_version}${plain} 安装完成，现已启动并运行..."
+    echo -e "${green}s-ui ${last_version}${plain} 安装完成，现已启动并运行..."
     echo -e "你可以通过以下 URL 访问面板：${green}"
     /usr/local/s-ui/sui uri
     echo -e "${plain}"

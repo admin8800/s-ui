@@ -125,6 +125,15 @@ jobs:
     needs: build-windows
     runs-on: ubuntu-latest
     steps:
+      - name: 规范化发布标签
+        id: vars
+        run: |
+          TAG="${{ inputs.tag }}"
+          case "$TAG" in
+            v*) echo "tag=$TAG" >> "$GITHUB_OUTPUT" ;;
+            *) echo "tag=v$TAG" >> "$GITHUB_OUTPUT" ;;
+          esac
+
       - name: 下载 Windows 构建产物
         uses: actions/download-artifact@v8
         with:
@@ -135,8 +144,8 @@ jobs:
       - name: 发布到当前仓库 Release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ inputs.tag }}
-          name: S-UI ${{ inputs.tag }}
+          tag_name: ${{ steps.vars.outputs.tag }}
+          name: S-UI ${{ steps.vars.outputs.tag }}
           target_commitish: ${{ github.sha }}
           prerelease: true
           fail_on_unmatched_files: true
