@@ -49,9 +49,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/main/install.sh
 
 **步骤 1：** 如果要安装指定旧版本，请在安装命令末尾追加带 `v` 的版本标签。例如版本 `v1.0.0`：
 
-```sh
-VERSION=v1.0.0 && bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/$VERSION/install.sh) $VERSION
-```
 
 ## 手动安装
 
@@ -104,28 +101,39 @@ curl -fsSL https://get.docker.com | sh
 > Docker compose 方式
 
 ```shell
-mkdir s-ui && cd s-ui
-wget -q https://raw.githubusercontent.com/admin8800/s-ui/main/docker-compose.yml
-docker compose up -d
+services:
+  s-ui:
+    image: ghcr.io/admin8800/s-ui
+    container_name: s-ui
+    hostname: "s-ui"
+    network_mode: host
+    volumes:
+      - "./db:/app/db"
+      - "./cert:/app/cert"
+    tty: true
+    restart: unless-stopped
+    entrypoint: "./entrypoint.sh"
 ```
+`docker compose up -d`
 
 > 直接使用 docker
 
 ```shell
 mkdir s-ui && cd s-ui
+
 docker run -itd \
-    -p 2095:2095 -p 2096:2096 -p 443:443 -p 80:80 \
+    --network host \
     -v $PWD/db/:/app/db/ \
     -v $PWD/cert/:/root/cert/ \
-    --name s-ui --restart=unless-stopped \
-    ghcr.io/admin8800/s-ui:latest
+    --name s-ui \
+    --restart=unless-stopped \
+    ghcr.io/admin8800/s-ui
 ```
 
 > 自行构建镜像
 
 ```shell
 git clone https://github.com/admin8800/s-ui
-git submodule update --init --recursive
 docker build -t s-ui .
 ```
 
@@ -145,13 +153,11 @@ docker build -t s-ui .
 ```shell
 # 克隆仓库
 git clone https://github.com/admin8800/s-ui
-# 克隆子模块
-git submodule update --init --recursive
 ```
 
 ### - 前端
 
-前端代码请查看 [s-ui-frontend](https://github.com/admin8800/s-ui-frontend)。
+前端代码请查看 [frontend](frontend)
 
 ### - 后端
 > 请先至少构建一次前端。

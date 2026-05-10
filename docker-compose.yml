@@ -1,16 +1,12 @@
 services:
   s-ui:
-    image: ghcr.io/admin8800/s-ui:latest
+    image: ghcr.io/admin8800/s-ui
     container_name: s-ui
     hostname: "s-ui"
+    network_mode: host
     volumes:
       - "./db:/app/db"
       - "./cert:/app/cert"
     tty: true
     restart: unless-stopped
-    ports:
-      - "2095:2095"
-      - "2096:2096"
-    networks:
-      - s-ui
     entrypoint: "./entrypoint.sh"
