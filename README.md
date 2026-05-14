@@ -30,14 +30,14 @@ Note: The original alireza0/s-ui project has been blocked and removed by GitHub.
 | macOS | amd64, arm64 | 实验性支持 |
 
 
-## 默认安装信息
-- 面板端口：2095
-- 面板路径：/app/
-- 订阅端口：2096
-- 订阅路径：/sub/
-- 用户名/密码：admin
+## Информация об установке по умолчанию
+- Порт панели: 2095
+- Путь панели: /app/
+- Порт подписки: 2096
+- Путь подписки: /sub/
+- Имя пользователя/пароль: admin
 
-## 安装或升级到最新版本
+## Установка или обновление до последней версии
 
 ### Linux/macOS
 ```sh
@@ -45,36 +45,40 @@ bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/main/install.sh
 ```
 
 ### Windows
-1. 从 [GitHub Releases](https://github.com/admin8800/s-ui/releases/latest) 下载最新 Windows 版本。
-2. 解压 ZIP 文件。
-3. 以管理员身份运行 `install-windows.bat`。
-4. 按照安装向导操作。
+1. Скачайте последнюю версию для Windows из [GitHub Releases](https://github.com/admin8800/s-ui/releases/latest).
+2. Распакуйте ZIP-файл.
+3. Запустите `install-windows.bat` от имени администратора.
+4. Следуйте инструкциям мастера установки.
 
-## 安装旧版本
+## Установка старой версии
 
-**步骤 1：** 如果要安装指定旧版本，请在安装命令末尾追加带 `v` 的版本标签。例如版本 `v1.0.0`：
+**Шаг 1:** Чтобы установить определенную старую версию, добавьте тег версии с `v` в конец команды установки. Например, версия `v1.0.0`:
+
+```sh
+bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/main/install.sh) v1.0.0
+```
 
 
-## 手动安装
+## Ручная установка
 
 ### Linux/macOS
-1. 根据你的系统和架构，从 GitHub 获取最新版本 S-UI：[https://github.com/admin8800/s-ui/releases/latest](https://github.com/admin8800/s-ui/releases/latest)
-2. **可选：** 获取最新版 `s-ui.sh`：[https://raw.githubusercontent.com/admin8800/s-ui/main/s-ui.sh](https://raw.githubusercontent.com/admin8800/s-ui/main/s-ui.sh)
-3. **可选：** 将 `s-ui.sh` 复制到 `/usr/bin/`，并执行 `chmod +x /usr/bin/s-ui`。
-4. 将 s-ui tar.gz 文件解压到你选择的目录，并进入解压后的目录。
-5. 将 `*.service` 文件复制到 `/etc/systemd/system/`，然后执行 `systemctl daemon-reload`。
-6. 使用 `systemctl enable s-ui --now` 启用开机自启并启动 S-UI 服务。
-7. 使用 `systemctl enable sing-box --now` 启动 sing-box 服务。
+1. Скачайте последнюю версию S-UI для вашей системы и архитектуры из GitHub: [https://github.com/admin8800/s-ui/releases/latest](https://github.com/admin8800/s-ui/releases/latest)
+2. **Необязательно:** скачайте последнюю версию `s-ui.sh`: [https://raw.githubusercontent.com/admin8800/s-ui/main/s-ui.sh](https://raw.githubusercontent.com/admin8800/s-ui/main/s-ui.sh)
+3. **Необязательно:** скопируйте `s-ui.sh` в `/usr/bin/` и выполните `chmod +x /usr/bin/s-ui`.
+4. Распакуйте tar.gz-архив s-ui в выбранный каталог и перейдите в распакованную папку.
+5. Скопируйте файлы `*.service` в `/etc/systemd/system/`, затем выполните `systemctl daemon-reload`.
+6. Выполните `systemctl enable s-ui --now`, чтобы включить автозапуск и запустить службу S-UI.
+7. Выполните `systemctl enable sing-box --now`, чтобы запустить службу sing-box.
 
 ### Windows
-1. 从 GitHub 获取最新 Windows 版本：[https://github.com/admin8800/s-ui/releases/latest](https://github.com/admin8800/s-ui/releases/latest)
-2. 下载适合的 Windows 包，例如 `s-ui-windows-amd64.zip`。
-3. 将 ZIP 文件解压到你选择的目录。
-4. 以管理员身份运行 `install-windows.bat`。
-5. 按照安装向导操作。
-6. 访问面板：http://localhost:2095/app
+1. Скачайте последнюю версию для Windows из GitHub: [https://github.com/admin8800/s-ui/releases/latest](https://github.com/admin8800/s-ui/releases/latest)
+2. Скачайте подходящий пакет для Windows, например `s-ui-windows-amd64.zip`.
+3. Распакуйте ZIP-файл в выбранный каталог.
+4. Запустите `install-windows.bat` от имени администратора.
+5. Следуйте инструкциям мастера установки.
+6. Откройте панель: http://localhost:2095/app
 
-## 卸载 S-UI
+## Удаление S-UI
 
 ```sh
 sudo -i
@@ -88,22 +92,22 @@ rm -fr /usr/local/s-ui
 rm /usr/bin/s-ui
 ```
 
-## 使用 Docker 安装
+## Установка с помощью Docker
 
 <details>
-   <summary>点击查看详情</summary>
+   <summary>Показать подробности</summary>
 
-### 使用方式
+### Использование
 
-**步骤 1：** 安装 Docker
+**Шаг 1:** Установите Docker
 
 ```shell
 curl -fsSL https://get.docker.com | sh
 ```
 
-**步骤 2：** 安装 S-UI
+**Шаг 2:** Установите S-UI
 
-> Docker compose 方式
+> Вариант с Docker Compose
 
 ```shell
 services:
@@ -121,7 +125,7 @@ services:
 ```
 `docker compose up -d`
 
-> 直接使用 docker
+> Прямой запуск через Docker
 
 ```shell
 mkdir s-ui && cd s-ui
@@ -135,7 +139,7 @@ docker run -itd \
     ghcr.io/admin8800/s-ui
 ```
 
-> 自行构建镜像
+> Самостоятельная сборка образа
 
 ```shell
 git clone https://github.com/admin8800/s-ui

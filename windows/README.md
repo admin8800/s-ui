@@ -1,23 +1,23 @@
-# Windows Files
+# Файлы Windows
 
-This directory contains all Windows-specific files for S-UI.
+Этот каталог содержит все файлы S-UI, относящиеся к Windows.
 
-## Available Files:
+## Доступные файлы:
 
-- **s-ui-windows.xml**: Windows Service configuration
-- **install-windows.bat**: Installation script
-- **s-ui-windows.bat**: Control panel
-- **uninstall-windows.bat**: Uninstallation script
-- **build-windows.bat**: Simple build script for CMD
-- **build-windows.ps1**: Advanced build script for PowerShell
+- **s-ui-windows.xml**: конфигурация службы Windows
+- **install-windows.bat**: скрипт установки
+- **s-ui-windows.bat**: панель управления
+- **uninstall-windows.bat**: скрипт удаления
+- **build-windows.bat**: простой скрипт сборки для CMD
+- **build-windows.ps1**: расширенный скрипт сборки для PowerShell
 
-## Usage:
+## Использование:
 
-To install S-UI on Windows:
-1. Run `install-windows.bat` as Administrator
-2. Follow the installation wizard
-3. Use `s-ui-windows.bat` for management
+Чтобы установить S-UI на Windows:
+1. Запустите `install-windows.bat` от имени администратора
+2. Следуйте инструкциям мастера установки
+3. Используйте `s-ui-windows.bat` для управления
 
-To build from source:
-- With CMD: `build-windows.bat`
-- With PowerShell: `.\build-windows.ps1`
+Чтобы собрать из исходного кода:
+- Через CMD: `build-windows.bat`
+- Через PowerShell: `.\build-windows.ps1`

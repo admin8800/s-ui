@@ -1,195 +1,196 @@
 @echo off
+chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 echo ========================================
-echo S-UI Windows Installer
+echo Установщик S-UI для Windows
 echo ========================================
 
-REM Check if running as Administrator
+REM Проверка запуска от имени администратора
 net session >nul 2>&1
 if %errorLevel% neq 0 (
-    echo Error: This script must be run as Administrator
-    echo Right-click on this file and select "Run as administrator"
+    echo Ошибка: этот скрипт нужно запускать от имени администратора
+    echo Щелкните файл правой кнопкой мыши и выберите "Запуск от имени администратора"
     pause
     exit /b 1
 )
 
 cd /d "%~dp0"
-REM Set installation directory
+REM Каталог установки
 set "INSTALL_DIR=C:\Program Files\s-ui"
 set "SERVICE_NAME=s-ui"
 
-echo Installing S-UI to: %INSTALL_DIR%
+echo Установка S-UI в каталог: %INSTALL_DIR%
 
-REM Create installation directory
+REM Создание каталога установки
 if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%"
 if not exist "%INSTALL_DIR%\db" mkdir "%INSTALL_DIR%\db"
 if not exist "%INSTALL_DIR%\logs" mkdir "%INSTALL_DIR%\logs"
 if not exist "%INSTALL_DIR%\cert" mkdir "%INSTALL_DIR%\cert"
 
-REM Copy files
-echo Copying files...
+REM Копирование файлов
+echo Копирование файлов...
 copy "sui.exe" "%INSTALL_DIR%\" >nul
 copy "s-ui-windows.xml" "%INSTALL_DIR%\" >nul
 copy "s-ui-windows.bat" "%INSTALL_DIR%\" >nul
 
-REM Check if WinSW is available
+REM Проверка наличия WinSW
 set "WINSW_PATH=%INSTALL_DIR%\winsw.exe"
 if not exist "%WINSW_PATH%" (
-    echo Downloading WinSW...
+    echo Загрузка WinSW...
     powershell -Command "& {Invoke-WebRequest -Uri 'https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe' -OutFile '%WINSW_PATH%'}"
     if exist "%WINSW_PATH%" (
-        echo WinSW downloaded successfully
+        echo WinSW успешно загружен
     ) else (
-        echo Warning: Failed to download WinSW. Service installation will be skipped.
-        echo You can manually download WinSW from: https://github.com/winsw/winsw/releases
+        echo Предупреждение: не удалось загрузить WinSW. Установка службы будет пропущена.
+        echo Вы можете скачать WinSW вручную: https://github.com/winsw/winsw/releases
     )
 )
 
-REM Install Windows Service
+REM Установка службы Windows
 if exist "%WINSW_PATH%" (
-    echo Installing Windows Service...
+    echo Установка службы Windows...
     cd /d "%INSTALL_DIR%"
     copy "winsw.exe" "s-ui-service.exe" >nul
     copy "s-ui-windows.xml" "s-ui-service.xml" >nul
         
-    REM Install service
+    REM Установка службы
     s-ui-service.exe install
     if %errorLevel% equ 0 (
-        echo Service installed successfully
+        echo Служба успешно установлена
     ) else (
-        echo Warning: Failed to install service. You can install it manually later.
+        echo Предупреждение: не удалось установить службу. Ее можно установить вручную позже.
     )
 )
 
-REM Run migration
-echo Running database migration...
+REM Запуск миграции
+echo Запуск миграции базы данных...
 cd /d "%INSTALL_DIR%"
 sui.exe migrate
 if %errorLevel% equ 0 (
-    echo Migration completed successfully
+    echo Миграция успешно завершена
 ) else (
-    echo Warning: Migration failed or database is new
+    echo Предупреждение: миграция не выполнена или база данных новая
 )
 
-REM Get network configuration
+REM Получение сетевой конфигурации
 echo.
 echo ========================================
-echo Network Configuration
+echo Сетевая конфигурация
 echo ========================================
 
-REM Get local IP addresses
-echo Available IP addresses:
+REM Получение локальных IP-адресов
+echo Доступные IP-адреса:
 for /f "tokens=2 delims=:" %%i in ('ipconfig ^| findstr /i "IPv4"') do (
     echo   %%i
 )
 
-REM Get panel configuration
+REM Получение настроек панели
 echo.
-set /p panel_port="Enter panel port (default: 2095): "
+set /p panel_port="Введите порт панели (по умолчанию: 2095): "
 if "%panel_port%"=="" set "panel_port=2095"
 
-set /p panel_path="Enter panel path (default: /app/): "
+set /p panel_path="Введите путь панели (по умолчанию: /app/): "
 if "%panel_path%"=="" set "panel_path=/app/"
 
-set /p sub_port="Enter subscription port (default: 2096): "
+set /p sub_port="Введите порт подписки (по умолчанию: 2096): "
 if "%sub_port%"=="" set "sub_port=2096"
 
-set /p sub_path="Enter subscription path (default: /sub/): "
+set /p sub_path="Введите путь подписки (по умолчанию: /sub/): "
 if "%sub_path%"=="" set "sub_path=/sub/"
 
-REM Apply settings
+REM Применение настроек
 echo.
-echo Applying settings...
+echo Применение настроек...
 cd /d "%INSTALL_DIR%"
 sui.exe setting -port %panel_port% -path "%panel_path%" -subPort %sub_port% -subPath "%sub_path%"
 
-REM Get admin credentials
+REM Получение учетных данных администратора
 echo.
 echo ========================================
-echo Admin Configuration
+echo Настройка администратора
 echo ========================================
 
-set /p admin_username="Enter admin username (default: admin): "
+set /p admin_username="Введите имя пользователя администратора (по умолчанию: admin): "
 if "%admin_username%"=="" set "admin_username=admin"
 
-set /p admin_password="Enter admin password: "
+set /p admin_password="Введите пароль администратора: "
 if "%admin_password%"=="" (
-    echo Error: Password cannot be empty
+    echo Ошибка: пароль не может быть пустым
     pause
     exit /b 1
 )
 
-REM Set admin credentials
-echo Setting admin credentials...
+REM Настройка учетных данных администратора
+echo Настройка учетных данных администратора...
 sui.exe admin -username "%admin_username%" -password "%admin_password%"
 
-REM Start service
-echo Starting S-UI service...
+REM Запуск службы
+echo Запуск службы S-UI...
 net start %SERVICE_NAME%
 if %errorLevel% equ 0 (
-    echo Service started successfully
+    echo Служба успешно запущена
 ) else (
-    echo Warning: Failed to start service. You can start it manually later.
+    echo Предупреждение: не удалось запустить службу. Ее можно запустить вручную позже.
 )
 
-REM Create desktop shortcut
-echo Creating desktop shortcut...
+REM Создание ярлыка на рабочем столе
+echo Создание ярлыка на рабочем столе...
 set "DESKTOP=%USERPROFILE%\Desktop"
 if exist "%DESKTOP%" (
-    powershell -Command "& {$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%DESKTOP%\S-UI.lnk'); $Shortcut.TargetPath = '%INSTALL_DIR%\s-ui-windows.bat'; $Shortcut.WorkingDirectory = '%INSTALL_DIR%'; $Shortcut.Description = 'S-UI Control Panel'; $Shortcut.Save()}"
-    echo Desktop shortcut created
+    powershell -Command "& {$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%DESKTOP%\S-UI.lnk'); $Shortcut.TargetPath = '%INSTALL_DIR%\s-ui-windows.bat'; $Shortcut.WorkingDirectory = '%INSTALL_DIR%'; $Shortcut.Description = 'Панель управления S-UI'; $Shortcut.Save()}"
+    echo Ярлык на рабочем столе создан
 )
 
-REM Create Start Menu shortcut
-echo Creating Start Menu shortcut...
+REM Создание ярлыка в меню Пуск
+echo Создание ярлыка в меню Пуск...
 set "START_MENU=%APPDATA%\Microsoft\Windows\Start Menu\Programs"
 if exist "%START_MENU%" (
     if not exist "%START_MENU%\S-UI" mkdir "%START_MENU%\S-UI"
-    powershell -Command "& {$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%START_MENU%\S-UI\S-UI Control Panel.lnk'); $Shortcut.TargetPath = '%INSTALL_DIR%\s-ui-windows.bat'; $Shortcut.WorkingDirectory = '%INSTALL_DIR%'; $Shortcut.Description = 'S-UI Control Panel'; $Shortcut.Save()}"
-    echo Start Menu shortcut created
+    powershell -Command "& {$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%START_MENU%\S-UI\Панель управления S-UI.lnk'); $Shortcut.TargetPath = '%INSTALL_DIR%\s-ui-windows.bat'; $Shortcut.WorkingDirectory = '%INSTALL_DIR%'; $Shortcut.Description = 'Панель управления S-UI'; $Shortcut.Save()}"
+    echo Ярлык в меню Пуск создан
 )
 
-REM Set permissions
-echo Setting permissions...
+REM Настройка прав
+echo Настройка прав доступа...
 icacls "%INSTALL_DIR%" /grant "Users:(OI)(CI)RX" /T >nul
 icacls "%INSTALL_DIR%\db" /grant "Users:(OI)(CI)F" /T >nul
 icacls "%INSTALL_DIR%\logs" /grant "Users:(OI)(CI)F" /T >nul
 
-REM Create environment variable
-echo Setting environment variable...
+REM Создание переменной окружения
+echo Настройка переменной окружения...
 setx SUI_HOME "%INSTALL_DIR%" /M >nul
 
-REM Show final configuration
+REM Показ итоговой конфигурации
 echo.
 echo ========================================
-echo Installation completed successfully!
+echo Установка успешно завершена!
 echo ========================================
 echo.
-echo S-UI has been installed to: %INSTALL_DIR%
+echo S-UI установлен в каталог: %INSTALL_DIR%
 echo.
-echo Configuration:
-echo   Panel Port: %panel_port%
-echo   Panel Path: %panel_path%
-echo   Subscription Port: %sub_port%
-echo   Subscription Path: %sub_path%
-echo   Admin Username: %admin_username%
+echo Конфигурация:
+echo   Порт панели: %panel_port%
+echo   Путь панели: %panel_path%
+echo   Порт подписки: %sub_port%
+echo   Путь подписки: %sub_path%
+echo   Имя пользователя администратора: %admin_username%
 echo.
-echo Access URLs:
+echo URL для доступа:
 for /f "tokens=2 delims=:" %%i in ('ipconfig ^| findstr /i "IPv4"') do (
     set "ip=%%i"
     set "ip=!ip: =!"
-    echo   Panel: http://!ip!:%panel_port%%panel_path%
-    echo   Subscription: http://!ip!:%sub_port%%sub_path%
+    echo   Панель: http://!ip!:%panel_port%%panel_path%
+    echo   Подписка: http://!ip!:%sub_port%%sub_path%
 )
 echo.
-echo Service name: %SERVICE_NAME%
+echo Имя службы: %SERVICE_NAME%
 echo.
-echo Useful commands:
-echo   net start %SERVICE_NAME%    - Start the service
-echo   net stop %SERVICE_NAME%     - Stop the service
-echo   sc query %SERVICE_NAME%     - Check service status
+echo Полезные команды:
+echo   net start %SERVICE_NAME%    - запустить службу
+echo   net stop %SERVICE_NAME%     - остановить службу
+echo   sc query %SERVICE_NAME%     - проверить состояние службы
 echo.
-echo You can also use the desktop shortcut or Start Menu item.
+echo Также можно использовать ярлык на рабочем столе или пункт меню Пуск.
 echo.
 pause

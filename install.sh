@@ -7,10 +7,10 @@ plain='\033[0m'
 
 cur_dir=$(pwd)
 
-# 检查 root 权限
-[[ $EUID -ne 0 ]] && echo -e "${red}致命错误：${plain}请使用 root 权限运行此脚本 \n " && exit 1
+# Проверка прав root
+[[ $EUID -ne 0 ]] && echo -e "${red}Критическая ошибка:${plain} запустите этот скрипт с правами root \n " && exit 1
 
-# 检查系统并设置 release 变量
+# Проверка системы и установка переменной release
 if [[ -f /etc/os-release ]]; then
     source /etc/os-release
     release=$ID
@@ -18,10 +18,10 @@ elif [[ -f /usr/lib/os-release ]]; then
     source /usr/lib/os-release
     release=$ID
 else
-    echo "检测系统失败，请联系作者！" >&2
+    echo "Не удалось определить систему, обратитесь к автору!" >&2
     exit 1
 fi
-echo "当前系统发行版为：$release"
+echo "Текущий дистрибутив системы: $release"
 
 arch() {
     case "$(uname -m)" in
@@ -32,11 +32,11 @@ arch() {
     armv6* | armv6) echo 'armv6' ;;
     armv5* | armv5) echo 'armv5' ;;
     s390x) echo 's390x' ;;
-    *) echo -e "${green}不支持的 CPU 架构！${plain}" && rm -f install.sh && exit 1 ;;
+    *) echo -e "${green}Архитектура CPU не поддерживается!${plain}" && rm -f install.sh && exit 1 ;;
     esac
 }
 
-echo "架构：$(arch)"
+echo "Архитектура: $(arch)"
 
 install_base() {
     case "${release}" in
@@ -59,25 +59,25 @@ install_base() {
 }
 
 config_after_install() {
-    echo -e "${yellow}正在迁移... ${plain}"
+    echo -e "${yellow}Выполняется миграция... ${plain}"
     /usr/local/s-ui/sui migrate
 
-    echo -e "${yellow}安装/更新完成！出于安全考虑，建议修改面板设置 ${plain}"
-    read -p "是否继续修改设置 [y/n]？": config_confirm
+    echo -e "${yellow}Установка/обновление завершены. Из соображений безопасности рекомендуется изменить настройки панели ${plain}"
+    read -p "Продолжить изменение настроек [y/n]? " config_confirm
     if [[ "${config_confirm}" == "y" || "${config_confirm}" == "Y" ]]; then
-        echo -e "请输入${yellow}面板端口${plain}（留空则使用现有/默认值）："
+        echo -e "Введите ${yellow}порт панели${plain} (оставьте пустым, чтобы использовать текущее/стандартное значение):"
         read config_port
-        echo -e "请输入${yellow}面板路径${plain}（留空则使用现有/默认值）："
+        echo -e "Введите ${yellow}путь панели${plain} (оставьте пустым, чтобы использовать текущее/стандартное значение):"
         read config_path
 
-        # 订阅配置
-        echo -e "请输入${yellow}订阅端口${plain}（留空则使用现有/默认值）："
+        # Настройки подписки
+        echo -e "Введите ${yellow}порт подписки${plain} (оставьте пустым, чтобы использовать текущее/стандартное значение):"
         read config_subPort
-        echo -e "请输入${yellow}订阅路径${plain}（留空则使用现有/默认值）："
+        echo -e "Введите ${yellow}путь подписки${plain} (оставьте пустым, чтобы использовать текущее/стандартное значение):"
         read config_subPath
 
-        # 设置配置
-        echo -e "${yellow}正在初始化，请稍候...${plain}"
+        # Применение настроек
+        echo -e "${yellow}Инициализация, подождите...${plain}"
         params=""
         [ -z "$config_port" ] || params="$params -port $config_port"
         [ -z "$config_path" ] || params="$params -path $config_path"
@@ -85,47 +85,47 @@ config_after_install() {
         [ -z "$config_subPath" ] || params="$params -subPath $config_subPath"
         /usr/local/s-ui/sui setting ${params}
 
-        read -p "是否修改管理员账号密码 [y/n]？": admin_confirm
+        read -p "Изменить логин и пароль администратора [y/n]? " admin_confirm
         if [[ "${admin_confirm}" == "y" || "${admin_confirm}" == "Y" ]]; then
-            # 首个管理员账号密码
-            read -p "请设置用户名：" config_account
-            read -p "请设置密码：" config_password
+            # Данные первого администратора
+            read -p "Задайте имя пользователя: " config_account
+            read -p "Задайте пароль: " config_password
 
-            # 设置账号密码
-            echo -e "${yellow}正在初始化，请稍候...${plain}"
+            # Настройка логина и пароля
+            echo -e "${yellow}Инициализация, подождите...${plain}"
             /usr/local/s-ui/sui admin -username ${config_account} -password ${config_password}
         else
-            echo -e "${yellow}当前管理员账号密码：${plain}"
+            echo -e "${yellow}Текущие учетные данные администратора:${plain}"
             /usr/local/s-ui/sui admin -show
         fi
     else
-        echo -e "${red}已取消...${plain}"
+        echo -e "${red}Отменено...${plain}"
         if [[ ! -f "/usr/local/s-ui/db/s-ui.db" ]]; then
             local usernameTemp=$(head -c 6 /dev/urandom | base64)
             local passwordTemp=$(head -c 6 /dev/urandom | base64)
-            echo -e "这是全新安装，出于安全考虑将生成随机登录信息："
+            echo -e "Это новая установка. Из соображений безопасности будут сгенерированы случайные данные для входа:"
             echo -e "###############################################"
-            echo -e "${green}用户名：${usernameTemp}${plain}"
-            echo -e "${green}密码：${passwordTemp}${plain}"
+            echo -e "${green}Имя пользователя: ${usernameTemp}${plain}"
+            echo -e "${green}Пароль: ${passwordTemp}${plain}"
             echo -e "###############################################"
-            echo -e "${red}如果忘记登录信息，可以输入 ${green}s-ui${red} 打开配置菜单${plain}"
+            echo -e "${red}Если вы забыли данные для входа, введите ${green}s-ui${red}, чтобы открыть меню настроек${plain}"
             /usr/local/s-ui/sui admin -username ${usernameTemp} -password ${passwordTemp}
         else
-            echo -e "${red}这是升级安装，将保留旧设置；如果忘记登录信息，可以输入 ${green}s-ui${red} 打开配置菜单${plain}"
+            echo -e "${red}Это обновление. Старые настройки будут сохранены. Если вы забыли данные для входа, введите ${green}s-ui${red}, чтобы открыть меню настроек${plain}"
         fi
     fi
 }
 
 prepare_services() {
     if [[ -f "/etc/systemd/system/sing-box.service" ]]; then
-        echo -e "${yellow}正在停止 sing-box 服务... ${plain}"
+        echo -e "${yellow}Останавливается служба sing-box... ${plain}"
         systemctl stop sing-box
         rm -f /usr/local/s-ui/bin/sing-box /usr/local/s-ui/bin/runSingbox.sh /usr/local/s-ui/bin/signal
     fi
     if [[ -e "/usr/local/s-ui/bin" ]]; then
         echo -e "###############################################################"
-        echo -e "${green}/usr/local/s-ui/bin${red} 目录已存在！"
-        echo -e "请检查其中内容，并在迁移后手动删除 ${plain}"
+        echo -e "${green}/usr/local/s-ui/bin${red} каталог уже существует!"
+        echo -e "Проверьте его содержимое и удалите вручную после миграции ${plain}"
         echo -e "###############################################################"
     fi
     systemctl daemon-reload
@@ -137,23 +137,23 @@ install_s-ui() {
     if [ $# == 0 ]; then
         last_version=$(curl -Ls "https://api.github.com/repos/admin8800/s-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
-            echo -e "${red}获取 s-ui 版本失败，可能是 Github API 限制导致，请稍后重试${plain}"
+            echo -e "${red}Не удалось получить версию s-ui. Возможно, сработало ограничение GitHub API. Повторите попытку позже${plain}"
             exit 1
         fi
-        echo -e "已获取 s-ui 最新版本：${last_version}，开始安装..."
+        echo -e "Получена последняя версия s-ui: ${last_version}. Начинается установка..."
         wget -N --no-check-certificate -O /tmp/s-ui-linux-$(arch).tar.gz https://github.com/admin8800/s-ui/releases/download/${last_version}/s-ui-linux-$(arch).tar.gz
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}下载 s-ui 失败，请确认服务器可以访问 Github ${plain}"
+            echo -e "${red}Не удалось скачать s-ui. Убедитесь, что сервер имеет доступ к GitHub ${plain}"
             exit 1
         fi
     else
         last_version=$1
         [[ "${last_version}" != v* ]] && last_version="v${last_version}"
         url="https://github.com/admin8800/s-ui/releases/download/${last_version}/s-ui-linux-$(arch).tar.gz"
-        echo -e "开始安装 s-ui ${last_version}"
+        echo -e "Начинается установка s-ui ${last_version}"
         wget -N --no-check-certificate -O /tmp/s-ui-linux-$(arch).tar.gz ${url}
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}下载 s-ui ${last_version} 失败，请检查该版本是否存在${plain}"
+            echo -e "${red}Не удалось скачать s-ui ${last_version}. Проверьте, существует ли эта версия${plain}"
             exit 1
         fi
     fi
@@ -176,14 +176,14 @@ install_s-ui() {
 
     systemctl enable s-ui --now
 
-    echo -e "${green}s-ui ${last_version}${plain} 安装完成，现已启动并运行..."
-    echo -e "你可以通过以下 URL 访问面板：${green}"
+    echo -e "${green}s-ui ${last_version}${plain} установлен, запущен и работает..."
+    echo -e "Панель доступна по следующему URL:${green}"
     /usr/local/s-ui/sui uri
     echo -e "${plain}"
     echo -e ""
     s-ui help
 }
 
-echo -e "${green}正在执行...${plain}"
+echo -e "${green}Выполняется...${plain}"
 install_base
 install_s-ui $1
