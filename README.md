@@ -3,9 +3,11 @@
 
 **提示：原`alireza0/s-ui`项目被Github官方封禁，本仓库是基于原版的最后一个版本`v 1.4.1`的完整备份，包含完整的前端和后端源码。**
 
-**本仓库仅修改了默认语言和时区为中文，其他都对标原版无改动。你可以直接使用本仓库的脚本，也可以自行fork编译**
+**本仓库仅修改了默认语言和时区为中文，其他都对标原版无改动。你可以直接使用本仓库的脚本，也可以自行fork编译，同时也欢迎大佬们贡献（请PR到dev分支）**
 
 Note: The original alireza0/s-ui project has been blocked and removed by GitHub. This repository is a complete backup based on the last version v1.4.1 of the original, containing the full front-end and back-end source code. This repository only modifies the default language and time zone to Chinese, with no other changes compared to the original. You can directly use the scripts from this repository, or fork and compile it yourself.
+
+Contributions are always welcome. If you'd like to help improve the project, please feel free to submit a PR to the dev branch.
 
 > **免责声明：** 本项目仅供个人学习与交流使用，请勿用于非法用途。
 
