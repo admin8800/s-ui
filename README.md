@@ -126,8 +126,6 @@ services:
 > 直接使用 docker
 
 ```shell
-mkdir s-ui && cd s-ui
-
 docker run -itd \
     --network host \
     -v $PWD/db/:/app/db/ \
