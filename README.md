@@ -1,101 +1,75 @@
-# S-UI
-**An Advanced Web Panel • Built on SagerNet/Sing-Box**
+## S-UI
+基于`SagerNet/Sing-Box`构建的高级 Web 面板
 
-![](https://img.shields.io/github/v/release/alireza0/s-ui.svg)
-![S-UI Docker pull](https://img.shields.io/docker/pulls/alireza7/s-ui.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/alireza0/s-ui)](https://goreportcard.com/report/github.com/alireza0/s-ui)
-[![Downloads](https://img.shields.io/github/downloads/alireza0/s-ui/total.svg)](https://img.shields.io/github/downloads/alireza0/s-ui/total.svg)
-[![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-> **Disclaimer:** This project is only for personal learning and communication, please do not use it for illegal purposes, please do not use it in a production environment
+> **免责声明：** 本项目仅供个人学习与交流使用，请勿用于非法用途。
 
-**If you think this project is helpful to you, you may wish to give a**:star2:
 
-**Want to contribute?** See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, coding conventions, testing, and the pull request process.
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alireza7)
-
-<a href="https://nowpayments.io/donation/alireza7" target="_blank" rel="noreferrer noopener">
-   <img src="https://nowpayments.io/images/embeds/donation-button-white.svg" alt="Crypto donation button by NOWPayments">
-</a>
-
-## Quick Overview
-| Features                               |      Enable?       |
+## 快速概览
+| 功能 | 是否支持 |
 | -------------------------------------- | :----------------: |
-| Multi-Protocol                         | :heavy_check_mark: |
-| Multi-Language                         | :heavy_check_mark: |
-| Multi-Client/Inbound                   | :heavy_check_mark: |
-| Advanced Traffic Routing Interface     | :heavy_check_mark: |
-| Client & Traffic & System Status       | :heavy_check_mark: |
-| Subscription Link (link/json/clash + info)| :heavy_check_mark: |
-| Dark/Light Theme                       | :heavy_check_mark: |
-| API Interface                          | :heavy_check_mark: |
+| 多协议 | :heavy_check_mark: |
+| 多语言 | :heavy_check_mark: |
+| 多客户端/入站 | :heavy_check_mark: |
+| 高级流量路由界面 | :heavy_check_mark: |
+| 客户端、流量与系统状态 | :heavy_check_mark: |
+| 订阅链接（link/json/clash + info） | :heavy_check_mark: |
+| 深色/浅色主题 | :heavy_check_mark: |
+| API 接口 | :heavy_check_mark: |
 
-## Supported Platforms
-| Platform | Architecture | Status |
+## 支持平台
+| 平台 | 架构 | 状态 |
 |----------|--------------|---------|
-| Linux    | amd64, arm64, armv7, armv6, armv5, 386, s390x | ✅ Supported |
-| Windows  | amd64, 386, arm64 | ✅ Supported |
-| macOS    | amd64, arm64 | 🚧 Experimental |
+| Linux | amd64, arm64, armv7, armv6, armv5, 386, s390x | 支持 |
+| Windows | amd64, 386, arm64 | 支持 |
+| macOS | amd64, arm64 | 实验性支持 |
 
-## Screenshots
 
-!["Main"](https://github.com/alireza0/s-ui-frontend/raw/main/media/main.png)
+## 默认安装信息
+- 面板端口：2095
+- 面板路径：/app/
+- 订阅端口：2096
+- 订阅路径：/sub/
+- 用户名/密码：admin
 
-[Other UI Screenshots](https://github.com/alireza0/s-ui-frontend/blob/main/screenshots.md)
-
-## API Documentation
-
-[API-Documentation Wiki](https://github.com/alireza0/s-ui/wiki/API-Documentation)
-
-## Default Installation Information
-- Panel Port: 2095
-- Panel Path: /app/
-- Subscription Port: 2096
-- Subscription Path: /sub/
-- User/Password: admin
-
-## Install & Upgrade to Latest Version
+## 安装或升级到最新版本
 
 ### Linux/macOS
 ```sh
-bash <(curl -Ls https://raw.githubusercontent.com/alireza0/s-ui/master/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/admin8800/s-ui/main/install.sh)
 ```
 
 ### Windows
-1. Download the latest Windows release from [GitHub Releases](https://github.com/alireza0/s-ui/releases/latest)
-2. Extract the ZIP file
-3. Run `install-windows.bat` as Administrator
-4. Follow the installation wizard
+1. 从 [GitHub Releases](https://github.com/admin8800/s-ui/releases/latest) 下载最新 Windows 版本。
+2. 解压 ZIP 文件。
+3. 以管理员身份运行 `install-windows.bat`。
+4. 按照安装向导操作。
 
-## Install legacy Version
+## 安装旧版本
 
-**Step 1:** To install your desired legacy version, add the version to the end of the installation command. e.g., ver `1.0.0`:
+**步骤 1：** 如果要安装指定旧版本，请在安装命令末尾追加带 `v` 的版本标签。例如版本 `v1.0.0`：
 
-```sh
-VERSION=1.0.0 && bash <(curl -Ls https://raw.githubusercontent.com/alireza0/s-ui/$VERSION/install.sh) $VERSION
-```
 
-## Manual installation
+## 手动安装
 
 ### Linux/macOS
-1. Get the latest version of S-UI based on your OS/Architecture from GitHub: [https://github.com/alireza0/s-ui/releases/latest](https://github.com/alireza0/s-ui/releases/latest)
-2. **OPTIONAL** Get the latest version of `s-ui.sh` [https://raw.githubusercontent.com/alireza0/s-ui/master/s-ui.sh](https://raw.githubusercontent.com/alireza0/s-ui/master/s-ui.sh)
-3. **OPTIONAL** Copy `s-ui.sh` to /usr/bin/ and run `chmod +x /usr/bin/s-ui`.
-4. Extract s-ui tar.gz file to a directory of your choice and navigate to the directory where you extracted the tar.gz file.
-5. Copy *.service files to /etc/systemd/system/ and run `systemctl daemon-reload`.
-6. Enable autostart and start S-UI service using `systemctl enable s-ui --now`
-7. Start sing-box service using `systemctl enable sing-box --now`
+1. 根据你的系统和架构，从 GitHub 获取最新版本 S-UI：[https://github.com/admin8800/s-ui/releases/latest](https://github.com/admin8800/s-ui/releases/latest)
+2. **可选：** 获取最新版 `s-ui.sh`：[https://raw.githubusercontent.com/admin8800/s-ui/main/s-ui.sh](https://raw.githubusercontent.com/admin8800/s-ui/main/s-ui.sh)
+3. **可选：** 将 `s-ui.sh` 复制到 `/usr/bin/`，并执行 `chmod +x /usr/bin/s-ui`。
+4. 将 s-ui tar.gz 文件解压到你选择的目录，并进入解压后的目录。
+5. 将 `*.service` 文件复制到 `/etc/systemd/system/`，然后执行 `systemctl daemon-reload`。
+6. 使用 `systemctl enable s-ui --now` 启用开机自启并启动 S-UI 服务。
+7. 使用 `systemctl enable sing-box --now` 启动 sing-box 服务。
 
 ### Windows
-1. Get the latest Windows version from GitHub: [https://github.com/alireza0/s-ui/releases/latest](https://github.com/alireza0/s-ui/releases/latest)
-2. Download the appropriate Windows package (e.g., `s-ui-windows-amd64.zip`)
-3. Extract the ZIP file to a directory of your choice
-4. Run `install-windows.bat` as Administrator
-5. Follow the installation wizard
-6. Access the panel at http://localhost:2095/app
+1. 从 GitHub 获取最新 Windows 版本：[https://github.com/admin8800/s-ui/releases/latest](https://github.com/admin8800/s-ui/releases/latest)
+2. 下载适合的 Windows 包，例如 `s-ui-windows-amd64.zip`。
+3. 将 ZIP 文件解压到你选择的目录。
+4. 以管理员身份运行 `install-windows.bat`。
+5. 按照安装向导操作。
+6. 访问面板：http://localhost:2095/app
 
-## Uninstall S-UI
+## 卸载 S-UI
 
 ```sh
 sudo -i
@@ -109,139 +83,145 @@ rm -fr /usr/local/s-ui
 rm /usr/bin/s-ui
 ```
 
-## Install using Docker
+## 使用 Docker 安装
 
 <details>
-   <summary>Click for details</summary>
+   <summary>点击查看详情</summary>
 
-### Usage
+### 使用方式
 
-**Step 1:** Install Docker
+**步骤 1：** 安装 Docker
 
 ```shell
 curl -fsSL https://get.docker.com | sh
 ```
 
-**Step 2:** Install S-UI
+**步骤 2：** 安装 S-UI
 
-> Docker compose method
+> Docker compose 方式
 
 ```shell
-mkdir s-ui && cd s-ui
-wget -q https://raw.githubusercontent.com/alireza0/s-ui/master/docker-compose.yml
-docker compose up -d
+services:
+  s-ui:
+    image: ghcr.io/admin8800/s-ui
+    container_name: s-ui
+    hostname: "s-ui"
+    network_mode: host
+    volumes:
+      - "./db:/app/db"
+      - "./cert:/app/cert"
+    tty: true
+    restart: unless-stopped
+    entrypoint: "./entrypoint.sh"
 ```
+`docker compose up -d`
 
-> Use docker
+> 直接使用 docker
 
 ```shell
-mkdir s-ui && cd s-ui
 docker run -itd \
-    -p 2095:2095 -p 2096:2096 -p 443:443 -p 80:80 \
+    --network host \
     -v $PWD/db/:/app/db/ \
     -v $PWD/cert/:/root/cert/ \
-    --name s-ui --restart=unless-stopped \
-    alireza7/s-ui:latest
+    --name s-ui \
+    --restart=unless-stopped \
+    ghcr.io/admin8800/s-ui
 ```
 
-> Build your own image
+> 自行构建镜像
 
 ```shell
-git clone https://github.com/alireza0/s-ui
-git submodule update --init --recursive
+git clone https://github.com/admin8800/s-ui
 docker build -t s-ui .
 ```
 
 </details>
 
-## Manual run ( contribution )
+## 手动运行（贡献开发）
 
 <details>
-   <summary>Click for details</summary>
+   <summary>点击查看详情</summary>
 
-### Build and run whole project
+### 构建并运行完整项目
 ```shell
 ./runSUI.sh
 ```
 
-### Clone the repository
+### 克隆仓库
 ```shell
-# clone repository
-git clone https://github.com/alireza0/s-ui
-# clone submodules
-git submodule update --init --recursive
+# 克隆仓库
+git clone https://github.com/admin8800/s-ui
 ```
 
+### - 前端
 
-### - Frontend
+前端代码请查看 [frontend](frontend)
 
-Visit [s-ui-frontend](https://github.com/alireza0/s-ui-frontend) for frontend code
+### - 后端
+> 请先至少构建一次前端。
 
-### - Backend
-> Please build frontend once before!
-
-To build backend:
+构建后端：
 ```shell
-# remove old frontend compiled files
+# 删除旧的前端编译文件
 rm -fr web/html/*
-# apply new frontend compiled files
+# 应用新的前端编译文件
 cp -R frontend/dist/ web/html/
-# build
+# 构建
 go build -o sui main.go
 ```
 
-To run backend (from root folder of repository):
+运行后端（在仓库根目录执行）：
 ```shell
 ./sui
 ```
 
 </details>
 
-## Languages
+## 语言
 
-- English
-- Farsi
-- Vietnamese
-- Chinese (Simplified)
-- Chinese (Traditional)
-- Russian
+- 英语
+- 波斯语
+- 越南语
+- 简体中文
+- 繁体中文
+- 俄语
 
-## Features
+## 功能
 
-- Supported protocols:
-  - General:  Mixed, SOCKS, HTTP, HTTPS, Direct, Redirect, TProxy
-  - V2Ray based: VLESS, VMess, Trojan, Shadowsocks
-  - Other protocols: ShadowTLS, Hysteria, Hysteria2, Naive, TUIC
-- Supports XTLS protocols
-- An advanced interface for routing traffic, incorporating PROXY Protocol, External, and Transparent Proxy, SSL Certificate, and Port
-- An advanced interface for inbound and outbound configuration
-- Clients’ traffic cap and expiration date
-- Displays online clients, inbounds and outbounds with traffic statistics, and system status monitoring
-- Subscription service with ability to add external links and subscription
-- HTTPS for secure access to the web panel and subscription service (self-provided domain + SSL certificate)
-- Dark/Light theme
+- 支持的协议：
+  - 通用协议：Mixed、SOCKS、HTTP、HTTPS、Direct、Redirect、TProxy
+  - 基于 V2Ray 的协议：VLESS、VMess、Trojan、Shadowsocks
+  - 其他协议：ShadowTLS、Hysteria、Hysteria2、Naive、TUIC
+- 支持 XTLS 协议。
+- 提供高级流量路由界面，支持 PROXY Protocol、External、透明代理、SSL 证书和端口配置。
+- 提供高级入站和出站配置界面。
+- 支持客户端流量上限和到期时间。
+- 显示在线客户端、入站、出站流量统计和系统状态监控。
+- 订阅服务支持添加外部链接和订阅。
+- Web 面板和订阅服务支持 HTTPS 安全访问（需自行提供域名和 SSL 证书）。
+- 深色/浅色主题。
 
-## Environment Variables
+## 环境变量
 
 <details>
-  <summary>Click for details</summary>
+  <summary>点击查看详情</summary>
 
-### Usage
+### 使用方式
 
-| Variable       |                      Type                      | Default       |
+| 变量 | 类型 | 默认值 |
 | -------------- | :--------------------------------------------: | :------------ |
-| SUI_LOG_LEVEL  | `"debug"` \| `"info"` \| `"warn"` \| `"error"` | `"info"`      |
-| SUI_DEBUG      |                   `boolean`                    | `false`       |
-| SUI_BIN_FOLDER |                    `string`                    | `"bin"`       |
-| SUI_DB_FOLDER  |                    `string`                    | `"db"`        |
-| SINGBOX_API    |                    `string`                    | -             |
+| SUI_LOG_LEVEL | `"debug"` \| `"info"` \| `"warn"` \| `"error"` | `"info"` |
+| SUI_DEBUG | `boolean` | `false` |
+| SUI_BIN_FOLDER | `string` | `"bin"` |
+| SUI_DB_FOLDER | `string` | `"db"` |
+| SINGBOX_API | `string` | - |
 
 </details>
 
-## SSL Certificate
+## SSL 证书
 
 <details>
-  <summary>Click for details</summary>
+  <summary>点击查看详情</summary>
 
 ### Certbot
 
@@ -250,19 +230,9 @@ snap install core; snap refresh core
 snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
 
-certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <Your Domain Name>
+certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <你的域名>
 ```
 
 </details>
 
-## Third-party Projects
-
-Community-made projects built around S-UI. These are not affiliated with or maintained by S-UI — use them at your own discretion:
-
-- [itning/reset-s-ui-traffic](https://github.com/itning/reset-s-ui-traffic) — periodic traffic reset for all users
-- [zqh2333/s-ui-traffic-reset](https://github.com/zqh2333/s-ui-traffic-reset) — traffic reset tool
-
-> Building something on top of S-UI (a Telegram bot, monitoring, automation, ...)? Open an issue/PR to get it listed here.
-
-## Stargazers over Time
-[![Stargazers over time](https://starchart.cc/alireza0/s-ui.svg)](https://starchart.cc/alireza0/s-ui)
+#### 鸣谢原作者：[alireza0/s-ui](https://github.com/alireza0/s-ui)
