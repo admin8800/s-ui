@@ -199,5 +199,5 @@ jobs:
           tag: ${{ steps.release_tag.outputs.tag }}
           file: s-ui-linux-${{ matrix.platform }}.tar.gz
           asset_name: s-ui-linux-${{ matrix.platform }}.tar.gz
-          prerelease: true
+          prerelease: false
           overwrite: true

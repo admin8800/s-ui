@@ -63,6 +63,7 @@ jobs:
 
       - name: Normalize release tag
         id: release_tag
+        shell: bash
         run: |
           TAG="${{ inputs.tag }}"
           case "$TAG" in
@@ -138,5 +139,5 @@ jobs:
           tag: ${{ steps.release_tag.outputs.tag }}
           file: s-ui-windows-${{ matrix.arch }}.zip
           asset_name: s-ui-windows-${{ matrix.arch }}.zip
-          prerelease: true
+          prerelease: false
           overwrite: true
