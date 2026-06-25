@@ -2,21 +2,12 @@ name: Release S-UI
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
-  push:
-    branches:
-      - main
-    tags:
-      - "*"
-    paths:
-      - '.github/workflows/release.yml'
-      - 'frontend/**'
-      - '**.sh'
-      - '**.go'
-      - 'go.mod'
-      - 'go.sum'
-      - 's-ui.service'
+    inputs:
+      tag:
+        description: "发布标签"
+        required: true
+        default: "v1.4.2"
+        type: string
 
 env:
   NODE_VERSION: "25"
@@ -75,6 +66,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+
+      - name: Normalize release tag
+        id: release_tag
+        run: |
+          TAG="${{ inputs.tag }}"
+          case "$TAG" in
+            v*) echo "tag=$TAG" >> "$GITHUB_OUTPUT" ;;
+            *) echo "tag=v$TAG" >> "$GITHUB_OUTPUT" ;;
+          esac
 
       - name: Download frontend dist
         uses: actions/download-artifact@v8
@@ -193,13 +193,10 @@ jobs:
 
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
-        if: |
-          (github.event_name == 'release' && github.event.action == 'published') ||
-          (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           repo_name: ${{ github.repository }}
-          tag: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
+          tag: ${{ steps.release_tag.outputs.tag }}
           file: s-ui-linux-${{ matrix.platform }}.tar.gz
           asset_name: s-ui-linux-${{ matrix.platform }}.tar.gz
           prerelease: true
