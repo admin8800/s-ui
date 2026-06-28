@@ -82,20 +82,7 @@ jobs:
         with:
           cache: false
           go-version-file: go.mod
-
-      - name: Install zip for Windows
-        if: matrix.arch == 'amd64'
-        shell: powershell
-        run: |
-          # Install Chocolatey if not available
-          if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
-            Set-ExecutionPolicy Bypass -Scope Process -Force
-            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-            iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-          }
-          # Install zip
-          choco install zip -y
-
+          
       - name: Build s-ui
         shell: bash
         run: |
@@ -120,9 +107,9 @@ jobs:
           curl -qsL -o s-ui-windows/libcronet.dll ${{ env.LIBCRONET_BASE_URL }}/libcronet-windows-${{ matrix.arch }}.dll
 
       - name: Package
-        shell: bash
+        shell: pwsh
         run: |
-          zip -r "s-ui-windows-${{ matrix.arch }}.zip" s-ui-windows
+          Compress-Archive -Path s-ui-windows -DestinationPath "s-ui-windows-${{ matrix.arch }}.zip"
 
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v7
