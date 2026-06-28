@@ -35,6 +35,11 @@ type Client struct {
 	Up       int64           `json:"up" form:"up"`
 	Desc     string          `json:"desc" form:"desc"`
 	Group    string          `json:"group" form:"group"`
+	Remark   string          `json:"remark" form:"remark"`
+
+	// Timestamps (unix seconds): creation time and last time the client had traffic
+	CreatedAt int64 `json:"createdAt" form:"createdAt" gorm:"default:0;not null"`
+	OnlineAt  int64 `json:"onlineAt" form:"onlineAt" gorm:"default:0;not null"`
 
 	// Delay start and periodic reset
 	DelayStart bool  `json:"delayStart" form:"delayStart" gorm:"default:false;not null"`
@@ -47,10 +52,10 @@ type Client struct {
 
 type Stats struct {
 	Id        uint64 `json:"id" gorm:"primaryKey;autoIncrement"`
-	DateTime  int64  `json:"dateTime"`
-	Resource  string `json:"resource"`
-	Tag       string `json:"tag"`
-	Direction bool   `json:"direction"`
+	DateTime  int64  `json:"dateTime" gorm:"uniqueIndex:idx_stats_bucket,priority:3"`
+	Resource  string `json:"resource" gorm:"uniqueIndex:idx_stats_bucket,priority:1"`
+	Tag       string `json:"tag" gorm:"uniqueIndex:idx_stats_bucket,priority:2"`
+	Direction bool   `json:"direction" gorm:"uniqueIndex:idx_stats_bucket,priority:4"`
 	Traffic   int64  `json:"traffic"`
 }
 
