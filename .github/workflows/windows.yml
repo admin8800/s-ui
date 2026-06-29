@@ -6,7 +6,7 @@ on:
       tag:
         description: "发布标签"
         required: true
-        default: "v1.4.2"
+        default: "v"
         type: string
 
 env:
